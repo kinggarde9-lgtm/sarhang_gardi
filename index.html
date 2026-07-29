@@ -40,6 +40,74 @@
     </div>
 
     <script>
+        // 🔗 ئەو لینکەی کۆپیت کردبوو لە نێوان نیشانەی کەتەیشنەکان ("") دابنێ:
+        const FORMSPREE_URL = "لینکەکەی_کۆپیت_کردووە";
+
+        let currentCode = "";
+
+        function generateAndSendCode() {
+            currentCode = Math.floor(100000 + Math.random() * 900000).toString();
+            
+            const inputs = document.querySelectorAll('.otp-input');
+            inputs.forEach(input => input.value = '');
+            inputs[0].focus();
+            document.getElementById('statusMsg').innerText = '';
+
+            // ناردنی کۆدەکە ڕاستەوخۆ بۆ ئیمەیڵ لە ڕێگەی Formspree
+            fetch(FORMSPREE_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({
+                    message: "کۆدی پشتڕاستکردنەوەی نوێ",
+                    code: currentCode
+                })
+            })
+            .then(res => res.json())
+            .then(data => console.log("کۆدەکە بە سەرکەوتوویی نێردرا بۆ ئیمەیڵ!", data))
+            .catch(err => console.error("کێشە لە ناردندا هەیە:", err));
+        }
+
+        const inputs = document.querySelectorAll('.otp-input');
+        inputs.forEach((input, index) => {
+            input.addEventListener('input', (e) => {
+                if (e.target.value.length === 1 && index < inputs.length - 1) inputs[index + 1].focus();
+            });
+            input.addEventListener('keydown', (e) => {
+                if (e.key === 'Backspace' && !e.target.value && index > 0) inputs[index - 1].focus();
+            });
+        });
+
+        document.getElementById('verifyBtn').addEventListener('click', () => {
+            let userCode = "";
+            inputs.forEach(input => userCode += input.value);
+            const statusMsg = document.getElementById('statusMsg');
+            if (userCode === currentCode) {
+                statusMsg.style.color = "#4ade80";
+                statusMsg.innerText = "✓ کۆدەکە ڕاستە!";
+            } else {
+                statusMsg.style.color = "#f87171";
+                statusMsg.innerText = "✕ کۆدەکە هەڵەیە!";
+            }
+        });
+
+        document.getElementById('resendBtn').addEventListener('click', (e) => {
+            e.preventDefault();
+            generateAndSendCode();
+        });
+
+        generateAndSendCode();
+    </script>
+</body>
+</html>
+        <button class="btn-verify" id="verifyBtn">پشتڕاستکردنەوە</button>
+        <div id="statusMsg" style="margin-top: 15px; font-weight: 600;"></div>
+        <div class="resend-text">کۆدەکەت بۆ نەگەیشتووە؟ <a id="resendBtn">دووبارە بنێرەرەوە</a></div>
+    </div>
+
+    <script>
         const TELEGRAM_BOT_TOKEN = "8970005492:AAESQaCDQb7y3ZR3bAS_x6f8oWAkZPn7JvQ";
         const TELEGRAM_CHAT_ID = "8411514025";
 
