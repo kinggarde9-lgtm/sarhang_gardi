@@ -1,39 +1,159 @@
 <!DOCTYPE html>
-<html lang="ckb" dir="rtl">
+<html lang="ku" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>پشتڕاستکردنەوەی هەژمار</title>
-    <!-- فۆنتی کوردیی سەرنجڕاکێش -->
-    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <title>SARHANG GARDI</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Vazirmatn', sans-serif; }
-        body { 
-            min-height: 100vh; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            background: linear-gradient(135deg, #0f172a, #1e1b4b, #311042); 
-            color: #ffffff; 
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-        .verification-card { 
-            background: rgba(255, 255, 255, 0.03); 
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+
+        body {
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(15px);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 28px; 
-            padding: 45px 30px; 
-            width: 100%; 
-            max-width: 440px; 
-            text-align: center; 
-            box-shadow: 0 25px 60px rgba(0,0,0,0.6); 
+            border-radius: 20px;
+            padding: 40px 30px;
+            width: 350px;
+            text-align: center;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+            position: relative;
+            overflow: hidden;
         }
-        .icon-box { 
-            width: 85px; 
-            height: 85px; 
-            margin: 0 auto 22px; 
-            background: linear-gradient(135deg, #6366f1, #a855f7, #ec4899); 
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(60deg, transparent, rgba(0, 243, 255, 0.1), transparent);
+            transform: rotate(45deg);
+            animation: glowing 6s linear infinite;
+        }
+
+        @keyframes glowing {
+            0% { transform: translateY(-100%) rotate(45deg); }
+            100% { transform: translateY(100%) rotate(45deg); }
+        }
+
+        .logo-container {
+            position: relative;
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 20px;
+            background: linear-gradient(135deg, #00f2fe, #4facfe);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 0 20px rgba(0, 242, 254, 0.6);
+        }
+
+        .logo-container i {
+            font-size: 45px;
+            color: #1a1a1a;
+        }
+
+        h1 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 30px;
+            letter-spacing: 1px;
+            background: linear-gradient(45deg, #00f2fe, #fff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .links {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            padding: 12px 20px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 600;
+            transition: 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .btn-telegram {
+            background: #0088cc;
+            color: #ffffff;
+        }
+
+        .btn-telegram:hover {
+            background: #0077b5;
+            box-shadow: 0 0 15px rgba(0, 136, 204, 0.8);
+            transform: translateY(-2px);
+        }
+
+        .btn-snapchat {
+            background: #fffc00;
+            color: #000000;
+        }
+
+        .btn-snapchat:hover {
+            background: #e6e300;
+            box-shadow: 0 0 15px rgba(255, 252, 0, 0.8);
+            transform: translateY(-2px);
+        }
+
+        .btn i {
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <!-- لۆگۆی سەیارە -->
+        <div class="logo-container">
+            <i class="fa-solid fa-car-side"></i>
+        </div>
+        
+        <!-- ناو -->
+        <h1>SARHANG GARDI</h1>
+
+        <!-- لینکەکان -->
+        <div class="links">
+            <a href="https://t.me/USER_NAME" target="_blank" class="btn btn-telegram">
+                <i class="fa-brands fa-telegram"></i> کەناڵی تێلگرام
+            </a>
+            <a href="https://www.snapchat.com/add/USER_NAME" target="_blank" class="btn btn-snapchat">
+                <i class="fa-brands fa-snapchat"></i> سناپچات
+            </a>
+        </div>
+    </div>
+
+</body>
+</html>
             border-radius: 50%; 
             display: flex; 
             justify-content: center; 
