@@ -15,7 +15,6 @@
         .otp-input { width: 50px; height: 60px; border-radius: 14px; border: 2px solid rgba(255, 255, 255, 0.15); background: rgba(15, 23, 42, 0.6); color: #fff; font-size: 22px; text-align: center; outline: none; }
         .btn-verify { width: 100%; padding: 16px; border: none; border-radius: 14px; background: linear-gradient(135deg, #6366f1, #a855f7); color: #fff; font-size: 16px; font-weight: 600; cursor: pointer; }
         .resend-text { margin-top: 20px; font-size: 13px; color: #94a3b8; }
-        .resend-text a { color: #a855f7; text-decoration: none; font-weight: 600; cursor: pointer; }
     </style>
 </head>
 <body>
@@ -25,207 +24,36 @@
         <h2>پشتڕاستکردنەوەی هەژمار</h2>
         <p>تکایە ئەو کۆدە 6 ژمارەیییە بنووسە:</p>
 
-        <form id="verifyForm">
-            <div class="otp-container">
-                <input type="text" maxlength="1" class="otp-input" required />
-                <input type="text" maxlength="1" class="otp-input" required />
-                <input type="text" maxlength="1" class="otp-input" required />
-                <input type="text" maxlength="1" class="otp-input" required />
-                <input type="text" maxlength="1" class="otp-input" required />
-                <input type="text" maxlength="1" class="otp-input" required />
-            </div>
-
-            <button type="submit" class="btn-verify" id="verifyBtn">پشتڕاستکردنەوە</button>
-        </form>
-
-        <div id="statusMsg" style="margin-top: 15px; font-weight: 600; color: #4ade80;"></div>
-    </div>
-
-    <script>
-        const inputs = document.querySelectorAll('.otp-input');
-        
-        // گواستنەوەی خودکاری ئۆتۆماتیکی نێوان خانەکان
-        inputs.forEach((input, index) => {
-            input.addEventListener('input', (e) => {
-                if (e.target.value.length === 1 && index < inputs.length - 1) {
-                    inputs[index + 1].focus();
-                }
-            });
-            input.addEventListener('keydown', (e) => {
-                if (e.key === 'Backspace' && !e.target.value && index > 0) {
-                    inputs[index - 1].focus();
-                }
-            });
-        });
-
-        // کاتێک دوگمەی پشتڕاستکردنەوە دەگوشرێت
-        document.getElementById('verifyForm').addEventListener('submit', (e) => {
-            e.preventDefault(); // بۆ ئەوەی ڕێگری لە ڕێستارت بوون بکات
-            
-            const statusMsg = document.getElementById('statusMsg');
-            statusMsg.innerText = "✓ سەرکەوتوو بوو! دەچێتە ژوورەوە...";
-            
-            // دوای یەک چرکە دەگوازرێتەوە بۆ لاپەڕەی سەرەکی یان لینکێکی تر
-            setTimeout(() => {
-                alert("پیرۆزە! هەژمارەکە بە سەرکەوتوویی کرایەوە.");
-                window.location.reload(); // لاپەڕەکە نوێ دەکاتەوە یان دەتوانیت لینکێکی دەرەکی دابنێیت
-            }, 1000);
-        });
-    </script>
-</body>
-</html>
+        <div class="otp-container">
+            <input type="text" maxlength="1" class="otp-input" value="1" autofocus />
+            <input type="text" maxlength="1" class="otp-input" value="2" />
+            <input type="text" maxlength="1" class="otp-input" value="3" />
+            <input type="text" maxlength="1" class="otp-input" value="4" />
+            <input type="text" maxlength="1" class="otp-input" value="5" />
+            <input type="text" maxlength="1" class="otp-input" value="6" />
         </div>
 
-        <button class="btn-verify" id="verifyBtn">پشتڕاستکردنەوە</button>
+        <!-- دوگمەی سەرەکی کە بە هیچ شێوەیەک بلۆک نابێت -->
+        <button type="button" class="btn-verify" id="mainVerifyBtn">پشتڕاستکردنەوە</button>
         <div id="statusMsg" style="margin-top: 15px; font-weight: 600;"></div>
     </div>
 
     <script>
-        document.getElementById('verifyBtn').addEventListener('click', () => {
+        document.getElementById('mainVerifyBtn').addEventListener('click', () => {
             const statusMsg = document.getElementById('statusMsg');
             statusMsg.style.color = "#4ade80";
-            statusMsg.innerText = "✓ پیرۆزە! بە سەرکەوتوویی چووە ژوورەوە.";
-            alert("سەرکەوتوو بوو! هەژمارەکە کرایەوە.");
-        });
-    </script>
-</body>
-</html>
+            statusMsg.innerText = "✓ سەرکەوتوو بوو! دەچێتە ژوورەوە...";
             
-            // هەر ژمارەیەک بنووسیت یان ئەگەر 123456 بنووسیت ڕاستەوخۆ دەچێتە ژوورەوە!
-            if (userCode.length === 6) {
-                statusMsg.style.color = "#4ade80";
-                statusMsg.innerText = "✓ بە سەرکەوتوویی چووە ژوورەوە!";
-                setTimeout(() => {
-                    alert("پیرۆزە! هەژمارەکە بە سەرکەوتوویی پشتڕاستکرایەوە.");
-                }, 200);
-            } else {
-                statusMsg.style.color = "#f87171";
-                statusMsg.innerText = "✕ تکایە هەموو خانەکان پڕبکەرەوە.";
-            }
-        });
-
-        document.getElementById('resendBtn').addEventListener('click', () => {
-            generateCode();
-        });
-
-        generateCode();
-    </script>
-</body>
-</html>
-        </div>
-
-        <button class="btn-verify" id="verifyBtn">پشتڕاستکردنەوە</button>
-        <div id="statusMsg" style="margin-top: 15px; font-weight: 600;"></div>
-        <div class="resend-text">کۆدێکی نوێت دەوێت؟ <button type="button" id="resendBtn">گۆڕینی کۆد</button></div>
-    </div>
-
-    <script>
-        let currentCode = "";
-
-        function generateCode() {
-            // دروستکردنی کۆدی ٦ ژمارەیی ڕەندۆم
-            currentCode = Math.floor(100000 + Math.random() * 900000).toString();
-            
-            // نیشاندانی کۆدەکە لەسەر شاشە بۆ ئەوەی زۆر بە ئاسانی بیبینیت
-            document.getElementById('codeDisplay').innerText = currentCode;
-            
-            const inputs = document.querySelectorAll('.otp-input');
-            inputs.forEach(input => input.value = '');
-            inputs[0].focus();
-            document.getElementById('statusMsg').innerText = '';
-        }
-
-        const inputs = document.querySelectorAll('.otp-input');
-        inputs.forEach((input, index) => {
-            input.addEventListener('input', (e) => {
-                if (e.target.value.length === 1 && index < inputs.length - 1) inputs[index + 1].focus();
-            });
-            input.addEventListener('keydown', (e) => {
-                if (e.key === 'Backspace' && !e.target.value && index > 0) inputs[index - 1].focus();
-            });
-        });
-
-        document.getElementById('verifyBtn').addEventListener('click', () => {
-            let userCode = "";
-            inputs.forEach(input => userCode += input.value);
-            const statusMsg = document.getElementById('statusMsg');
-            
-            if (userCode === currentCode) {
-                statusMsg.style.color = "#4ade80";
-                statusMsg.innerText = "✓ کۆدەکە ١٠٠٪ ڕاستە و بە سەرکەوتوویی تێپەڕی!";
-            } else {
-                statusMsg.style.color = "#f87171";
-                statusMsg.innerText = "✕ کۆدەکە هەڵەیە! تکایە ئەو کۆدەی سەرەوە بنووسە.";
-            }
-        });
-
-        document.getElementById('resendBtn').addEventListener('click', () => {
-            generateCode();
-        });
-
-        generateCode();
-    </script>
-</body>
-</html>
-        <button class="btn-verify" id="verifyBtn">پشتڕاستکردنەوە</button>
-        <div id="statusMsg" style="margin-top: 15px; font-weight: 600;"></div>
-        <div class="resend-text">کۆدێکی نوێت دەوێت؟ <button type="button" id="resendBtn">دووبارە دروست بکەرەوە</button></div>
-    </div>
-
-    <script>
-        let currentCode = "";
-
-        function generateCode() {
-            // دروستکردنی کۆدی ٦ ژمارەیی
-            currentCode = Math.floor(100000 + Math.random() * 900000).toString();
-            
-            const inputs = document.querySelectorAll('.otp-input');
-            inputs.forEach(input => input.value = '');
-            inputs[0].focus();
-            document.getElementById('statusMsg').innerText = '';
-
-            // نیشاندانی کۆدەکە ڕاستەوخۆ بۆ بەکارهێنەر لەسەر شاشە
+            // پیشاندانی پەنجەرەی سەرکەوتن
             setTimeout(() => {
-                alert("🔐 کۆدی پشتڕاستکردنەوەی تۆ: " + currentCode);
+                alert("پیرۆزە! هەژمارەکە بە سەرکەوتوویی کرایەوە.");
+                window.location.reload();
             }, 300);
-        }
-
-        const inputs = document.querySelectorAll('.otp-input');
-        inputs.forEach((input, index) => {
-            input.addEventListener('input', (e) => {
-                if (e.target.value.length === 1 && index < inputs.length - 1) inputs[index + 1].focus();
-            });
-            input.addEventListener('keydown', (e) => {
-                if (e.key === 'Backspace' && !e.target.value && index > 0) inputs[index - 1].focus();
-            });
         });
-
-        document.getElementById('verifyBtn').addEventListener('click', () => {
-            let userCode = "";
-            inputs.forEach(input => userCode += input.value);
-            const statusMsg = document.getElementById('statusMsg');
-            if (userCode === currentCode) {
-                statusMsg.style.color = "#4ade80";
-                statusMsg.innerText = "✓ کۆدەکە ڕاستە!";
-            } else {
-                statusMsg.style.color = "#f87171";
-                statusMsg.innerText = "✕ کۆدەکە هەڵەیە!";
-            }
-        });
-
-        document.getElementById('resendBtn').addEventListener('click', () => {
-            generateCode();
-        });
-
-        generateCode();
     </script>
 </body>
 </html>
-                <input type="text" maxlength="1" class="otp-input" />
-            </div>
-
-            <button type="button" class="btn-verify" id="sendBtn">ناردنی کۆد بۆ ئیمەیڵ</button>
-            <button type="button" class="btn-verify" id="verifyBtn" style="background: #334155;">پشتڕاستکردنەوە</button>
+erifyBtn" style="background: #334155;">پشتڕاستکردنەوە</button>
         </form>
 
         <div id="statusMsg" style="margin-top: 15px; font-weight: 600;"></div>
