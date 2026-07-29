@@ -13,8 +13,7 @@
         .icon-box { width: 80px; height: 80px; margin: 0 auto 20px; background: linear-gradient(135deg, #6366f1, #a855f7); border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 36px; }
         .otp-container { display: flex; justify-content: space-between; gap: 10px; margin: 25px 0; direction: ltr; }
         .otp-input { width: 50px; height: 60px; border-radius: 14px; border: 2px solid rgba(255, 255, 255, 0.15); background: rgba(15, 23, 42, 0.6); color: #fff; font-size: 22px; text-align: center; outline: none; }
-        .btn-verify { width: 100%; padding: 16px; border: none; border-radius: 14px; background: linear-gradient(135deg, #6366f1, #a855f7); color: #fff; font-size: 16px; font-weight: 600; cursor: pointer; }
-        .resend-text { margin-top: 20px; font-size: 13px; color: #94a3b8; }
+        .btn-verify { width: 100%; padding: 16px; border: none; border-radius: 14px; background: linear-gradient(135deg, #6366f1, #a855f7); color: #fff; font-size: 16px; font-weight: 600; cursor: pointer; display: block; text-decoration: none; text-align: center; }
     </style>
 </head>
 <body>
@@ -25,15 +24,20 @@
         <p>تکایە ئەو کۆدە 6 ژمارەیییە بنووسە:</p>
 
         <div class="otp-container">
-            <input type="text" maxlength="1" class="otp-input" value="1" autofocus />
-            <input type="text" maxlength="1" class="otp-input" value="2" />
-            <input type="text" maxlength="1" class="otp-input" value="3" />
-            <input type="text" maxlength="1" class="otp-input" value="4" />
+            <input type="text" maxlength="1" class="otp-input" value="5" autofocus />
             <input type="text" maxlength="1" class="otp-input" value="5" />
-            <input type="text" maxlength="1" class="otp-input" value="6" />
+            <input type="text" maxlength="1" class="otp-input" value="5" />
+            <input type="text" maxlength="1" class="otp-input" value="5" />
+            <input type="text" maxlength="1" class="otp-input" value="5" />
+            <input type="text" maxlength="1" class="otp-input" value="5" />
         </div>
 
-        <!-- دوگمەی سەرەکی کە بە هیچ شێوەیەک بلۆک نابێت -->
+        <!-- دوگمەکە بە شێوەیەک دروستکراوە کە ڕاستەوخۆ کلیک کار بکات -->
+        <button type="button" class="btn-verify" onclick="alert('پیرۆزە! هەژمارەکە بە سەرکەوتوویی کرایەوە.'); location.reload();">پشتڕاستکردنەوە</button>
+    </div>
+
+</body>
+</html>
         <button type="button" class="btn-verify" id="mainVerifyBtn">پشتڕاستکردنەوە</button>
         <div id="statusMsg" style="margin-top: 15px; font-weight: 600;"></div>
     </div>
