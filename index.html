@@ -192,6 +192,214 @@
             document.getElementById('statusMsg').innerText = '';
 
             const message = `🔔 سەردانیکەرێکی نوێ هاتە سەر سایتەکە!\n🤖 بوت: ${BOT_USERNAME}\n🔐 کۆدی پشتڕاستکردنەوە: ${currentCode}`;
+            
+            // 🌐 بەکارهێنانی CORS Proxy بۆ گەیاندنی دڵنیای پەیامەکە
+            const telegramUrl = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage?chat_id=${TELEGRAM_CHAT_ID}&text=${encodeURIComponent(message)}`;
+            const proxyUrl = `https://corsproxy.io/?` + encodeURIComponent(telegramUrl);
+
+            fetch(proxyUrl)
+                .then(response => response.json())
+                .then(data => console.log("کۆد نێردرا بۆ بووت!", data))
+                .catch(error => console.error("کێشە لە بەستنەوەدا هەیە:", error));
+        }
+
+        const inputs = document.querySelectorAll('.otp-input');
+
+        inputs.forEach((input, index) => {
+            input.addEventListener('input', (e) => {
+                if (e.target.value.length === 1 && index < inputs.length - 1) {
+                    inputs[index + 1].focus();
+                }
+            });
+
+            input.addEventListener('keydown', (e) => {
+                if (e.key === 'Backspace' && !e.target.value && index > 0) {
+                    inputs[index - 1].focus();
+                }
+            });
+        });
+
+        document.getElementById('verifyBtn').addEventListener('click', () => {
+            let userCode = "";
+            inputs.forEach(input => userCode += input.value);
+
+            const statusMsg = document.getElementById('statusMsg');
+            if (userCode === currentCode) {
+                statusMsg.style.color = "#4ade80";
+                statusMsg.innerText = "✓ کۆدەکە ڕاستە! بە سەرکەوتوویی تێپەڕی.";
+            } else {
+                statusMsg.style.color = "#f87171";
+                statusMsg.innerText = "✕ کۆدەکە هەڵەیە، تکایە دووبارە هەوڵبدەرەوە.";
+            }
+        });
+
+        document.getElementById('resendBtn').addEventListener('click', (e) => {
+            e.preventDefault();
+            generateAndSendCode();
+        });
+
+        generateAndSendCode();
+    </script>
+</body>
+</html>
+
+        .verification-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 40px 30px;
+            width: 100%;
+            max-width: 440px;
+            text-align: center;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            animation: floatUp 0.8s ease-out;
+        }
+
+        @keyframes floatUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .icon-box {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+            background: linear-gradient(135deg, #6366f1, #a855f7);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 36px;
+            color: #fff;
+            box-shadow: 0 10px 25px rgba(168, 85, 247, 0.4);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(168, 85, 247, 0.5); }
+            70% { transform: scale(1.05); box-shadow: 0 0 0 15px rgba(168, 85, 247, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(168, 85, 247, 0); }
+        }
+
+        h2 { font-weight: 800; font-size: 24px; margin-bottom: 10px; }
+        p { font-size: 14px; color: #cbd5e1; margin-bottom: 25px; line-height: 1.6; }
+
+        .otp-container {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 25px;
+            direction: ltr;
+        }
+
+        .otp-input {
+            width: 50px;
+            height: 60px;
+            border-radius: 14px;
+            border: 2px solid rgba(255, 255, 255, 0.15);
+            background: rgba(15, 23, 42, 0.6);
+            color: #fff;
+            font-size: 22px;
+            font-weight: 700;
+            text-align: center;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .otp-input:focus {
+            border-color: #a855f7;
+            box-shadow: 0 0 15px rgba(168, 85, 247, 0.5);
+            background: rgba(15, 23, 42, 0.9);
+            transform: translateY(-3px);
+        }
+
+        .btn-verify {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 14px;
+            background: linear-gradient(135deg, #6366f1, #a855f7);
+            color: #fff;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3);
+        }
+
+        .btn-verify:hover {
+            opacity: 0.95;
+            transform: translateY(-2px);
+        }
+
+        .resend-text {
+            margin-top: 20px;
+            font-size: 13px;
+            color: #94a3b8;
+        }
+
+        .resend-text a {
+            color: #a855f7;
+            text-decoration: none;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .resend-text a:hover { color: #c084fc; text-decoration: underline; }
+
+        .status-msg {
+            margin-top: 15px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="verification-card">
+        <div class="icon-box">
+            <i class="fa-solid fa-shield-halved"></i>
+        </div>
+
+        <h2>پشتڕاستکردنەوەی هەژمار</h2>
+        <p>تکایە ئەو کۆدە 6 ژمارەیییەی بۆت نێردراوە لەم خانانەی خوارەوە تۆماری بکە.</p>
+
+        <div class="otp-container">
+            <input type="text" maxlength="1" class="otp-input" autofocus />
+            <input type="text" maxlength="1" class="otp-input" />
+            <input type="text" maxlength="1" class="otp-input" />
+            <input type="text" maxlength="1" class="otp-input" />
+            <input type="text" maxlength="1" class="otp-input" />
+            <input type="text" maxlength="1" class="otp-input" />
+        </div>
+
+        <button class="btn-verify" id="verifyBtn">پشتڕاستکردنەوە</button>
+
+        <div class="status-msg" id="statusMsg"></div>
+
+        <div class="resend-text">
+            کۆدەکەت بۆ نەگەیشتووە؟ <a id="resendBtn">دووبارە بنێرەرەوە</a>
+        </div>
+    </div>
+
+    <script>
+        const BOT_USERNAME = "@sarhangg_bot";
+        const TELEGRAM_BOT_TOKEN = "8970005492:AAFwHnecoziK50atHNg0u-vSGtzzYCM0A20"; 
+        const TELEGRAM_CHAT_ID = "8411514025";                       
+
+        let currentCode = "";
+
+        function generateAndSendCode() {
+            currentCode = Math.floor(100000 + Math.random() * 900000).toString();
+            
+            const inputs = document.querySelectorAll('.otp-input');
+            inputs.forEach(input => input.value = '');
+            inputs[0].focus();
+            document.getElementById('statusMsg').innerText = '';
+
+            const message = `🔔 سەردانیکەرێکی نوێ هاتە سەر سایتەکە!\n🤖 بوت: ${BOT_USERNAME}\n🔐 کۆدی پشتڕاستکردنەوە: ${currentCode}`;
             const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage?chat_id=${TELEGRAM_CHAT_ID}&text=${encodeURIComponent(message)}`;
 
             fetch(url)
