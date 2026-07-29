@@ -15,7 +15,7 @@
         .otp-input { width: 50px; height: 60px; border-radius: 14px; border: 2px solid rgba(255, 255, 255, 0.15); background: rgba(15, 23, 42, 0.6); color: #fff; font-size: 22px; text-align: center; outline: none; }
         .btn-verify { width: 100%; padding: 16px; border: none; border-radius: 14px; background: linear-gradient(135deg, #6366f1, #a855f7); color: #fff; font-size: 16px; font-weight: 600; cursor: pointer; }
         .resend-text { margin-top: 20px; font-size: 13px; color: #94a3b8; }
-        .resend-text button { background: none; border: none; color: #a855f7; cursor: pointer; font-weight: 600; font-family: inherit; }
+        .resend-text a { color: #a855f7; text-decoration: none; font-weight: 600; cursor: pointer; }
     </style>
 </head>
 <body>
@@ -24,16 +24,56 @@
         <div class="icon-box"><i class="fa-solid fa-shield-halved"></i></div>
         <h2>پشتڕاستکردنەوەی هەژمار</h2>
         <p>تکایە ئەو کۆدە 6 ژمارەیییە بنووسە:</p>
-        
-        <div id="codeDisplay" style="font-size: 26px; font-weight: bold; color: #4ade80; letter-spacing: 5px; margin: 15px 0; background: rgba(0,0,0,0.4); padding: 10px; border-radius: 10px;">123456</div>
 
-        <div class="otp-container">
-            <input type="text" maxlength="1" class="otp-input" value="1" autofocus />
-            <input type="text" maxlength="1" class="otp-input" value="2" />
-            <input type="text" maxlength="1" class="otp-input" value="3" />
-            <input type="text" maxlength="1" class="otp-input" value="4" />
-            <input type="text" maxlength="1" class="otp-input" value="5" />
-            <input type="text" maxlength="1" class="otp-input" value="6" />
+        <form id="verifyForm">
+            <div class="otp-container">
+                <input type="text" maxlength="1" class="otp-input" required />
+                <input type="text" maxlength="1" class="otp-input" required />
+                <input type="text" maxlength="1" class="otp-input" required />
+                <input type="text" maxlength="1" class="otp-input" required />
+                <input type="text" maxlength="1" class="otp-input" required />
+                <input type="text" maxlength="1" class="otp-input" required />
+            </div>
+
+            <button type="submit" class="btn-verify" id="verifyBtn">پشتڕاستکردنەوە</button>
+        </form>
+
+        <div id="statusMsg" style="margin-top: 15px; font-weight: 600; color: #4ade80;"></div>
+    </div>
+
+    <script>
+        const inputs = document.querySelectorAll('.otp-input');
+        
+        // گواستنەوەی خودکاری ئۆتۆماتیکی نێوان خانەکان
+        inputs.forEach((input, index) => {
+            input.addEventListener('input', (e) => {
+                if (e.target.value.length === 1 && index < inputs.length - 1) {
+                    inputs[index + 1].focus();
+                }
+            });
+            input.addEventListener('keydown', (e) => {
+                if (e.key === 'Backspace' && !e.target.value && index > 0) {
+                    inputs[index - 1].focus();
+                }
+            });
+        });
+
+        // کاتێک دوگمەی پشتڕاستکردنەوە دەگوشرێت
+        document.getElementById('verifyForm').addEventListener('submit', (e) => {
+            e.preventDefault(); // بۆ ئەوەی ڕێگری لە ڕێستارت بوون بکات
+            
+            const statusMsg = document.getElementById('statusMsg');
+            statusMsg.innerText = "✓ سەرکەوتوو بوو! دەچێتە ژوورەوە...";
+            
+            // دوای یەک چرکە دەگوازرێتەوە بۆ لاپەڕەی سەرەکی یان لینکێکی تر
+            setTimeout(() => {
+                alert("پیرۆزە! هەژمارەکە بە سەرکەوتوویی کرایەوە.");
+                window.location.reload(); // لاپەڕەکە نوێ دەکاتەوە یان دەتوانیت لینکێکی دەرەکی دابنێیت
+            }, 1000);
+        });
+    </script>
+</body>
+</html>
         </div>
 
         <button class="btn-verify" id="verifyBtn">پشتڕاستکردنەوە</button>
