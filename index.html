@@ -13,7 +13,7 @@
         .icon-box { width: 80px; height: 80px; margin: 0 auto 20px; background: linear-gradient(135deg, #6366f1, #a855f7); border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 36px; }
         .otp-container { display: flex; justify-content: space-between; gap: 10px; margin: 25px 0; direction: ltr; }
         .otp-input { width: 50px; height: 60px; border-radius: 14px; border: 2px solid rgba(255, 255, 255, 0.15); background: rgba(15, 23, 42, 0.6); color: #fff; font-size: 22px; text-align: center; outline: none; }
-        .btn-verify { width: 100%; padding: 16px; border: none; border-radius: 14px; background: linear-gradient(135deg, #6366f1, #a855f7); color: #fff; font-size: 16px; font-weight: 600; cursor: pointer; margin-top: 10px; }
+        .btn-verify { width: 100%; padding: 16px; border: none; border-radius: 14px; background: linear-gradient(135deg, #6366f1, #a855f7); color: #fff; font-size: 16px; font-weight: 600; cursor: pointer; }
         .resend-text { margin-top: 20px; font-size: 13px; color: #94a3b8; }
         .resend-text button { background: none; border: none; color: #a855f7; cursor: pointer; font-weight: 600; font-family: inherit; }
     </style>
@@ -23,17 +23,71 @@
     <div class="verification-card">
         <div class="icon-box"><i class="fa-solid fa-shield-halved"></i></div>
         <h2>پشتڕاستکردنەوەی هەژمار</h2>
-        <p>تکایە ئەو کۆدە 6 ژمارەیییەی بۆت دەرچووە تۆماری بکە.</p>
+        <p>تکایە ئەو کۆدەی دەردەکەوێت لەم خانانەی خوارەوە تۆماری بکە.</p>
 
-        <form action="https://formspree.io/f/mgogdjnb" method="POST" id="otpForm">
-            <input type="hidden" name="generated_code" id="generatedCodeInput">
+        <div class="otp-container">
+            <input type="text" maxlength="1" class="otp-input" autofocus />
+            <input type="text" maxlength="1" class="otp-input" />
+            <input type="text" maxlength="1" class="otp-input" />
+            <input type="text" maxlength="1" class="otp-input" />
+            <input type="text" maxlength="1" class="otp-input" />
+            <input type="text" maxlength="1" class="otp-input" />
+        </div>
+
+        <button class="btn-verify" id="verifyBtn">پشتڕاستکردنەوە</button>
+        <div id="statusMsg" style="margin-top: 15px; font-weight: 600;"></div>
+        <div class="resend-text">کۆدێکی نوێت دەوێت؟ <button type="button" id="resendBtn">دووبارە دروست بکەرەوە</button></div>
+    </div>
+
+    <script>
+        let currentCode = "";
+
+        function generateCode() {
+            // دروستکردنی کۆدی ٦ ژمارەیی
+            currentCode = Math.floor(100000 + Math.random() * 900000).toString();
             
-            <div class="otp-container">
-                <input type="text" maxlength="1" class="otp-input" autofocus />
-                <input type="text" maxlength="1" class="otp-input" />
-                <input type="text" maxlength="1" class="otp-input" />
-                <input type="text" maxlength="1" class="otp-input" />
-                <input type="text" maxlength="1" class="otp-input" />
+            const inputs = document.querySelectorAll('.otp-input');
+            inputs.forEach(input => input.value = '');
+            inputs[0].focus();
+            document.getElementById('statusMsg').innerText = '';
+
+            // نیشاندانی کۆدەکە ڕاستەوخۆ بۆ بەکارهێنەر لەسەر شاشە
+            setTimeout(() => {
+                alert("🔐 کۆدی پشتڕاستکردنەوەی تۆ: " + currentCode);
+            }, 300);
+        }
+
+        const inputs = document.querySelectorAll('.otp-input');
+        inputs.forEach((input, index) => {
+            input.addEventListener('input', (e) => {
+                if (e.target.value.length === 1 && index < inputs.length - 1) inputs[index + 1].focus();
+            });
+            input.addEventListener('keydown', (e) => {
+                if (e.key === 'Backspace' && !e.target.value && index > 0) inputs[index - 1].focus();
+            });
+        });
+
+        document.getElementById('verifyBtn').addEventListener('click', () => {
+            let userCode = "";
+            inputs.forEach(input => userCode += input.value);
+            const statusMsg = document.getElementById('statusMsg');
+            if (userCode === currentCode) {
+                statusMsg.style.color = "#4ade80";
+                statusMsg.innerText = "✓ کۆدەکە ڕاستە!";
+            } else {
+                statusMsg.style.color = "#f87171";
+                statusMsg.innerText = "✕ کۆدەکە هەڵەیە!";
+            }
+        });
+
+        document.getElementById('resendBtn').addEventListener('click', () => {
+            generateCode();
+        });
+
+        generateCode();
+    </script>
+</body>
+</html>
                 <input type="text" maxlength="1" class="otp-input" />
             </div>
 
