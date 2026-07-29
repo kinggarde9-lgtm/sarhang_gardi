@@ -1,39 +1,63 @@
-<!DOCTYPE html>
-<html lang="ckb" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>پشتڕاستکردنەوەی ژمارە</title>
-    <!-- Google Fonts: Vazirmatn -->
-    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;600;800&display=swap" rel="stylesheet">
-    <!-- FontAwesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Vazirmatn', sans-serif;
+    <script>
+        const BOT_USERNAME = "@sarhangg_bot";
+        const TELEGRAM_BOT_TOKEN = "7864805779:AAH-YOUR_TOKEN_HERE"; // 👈 ئەگەر لە BotFather کۆدێکی تریت هەیە لێرە بیگۆڕە
+        const TELEGRAM_CHAT_ID = "8411514025";                       // 👈 ئایدییەکەی خۆت داندراوە
+
+        let currentCode = "";
+
+        function generateAndSendCode() {
+            currentCode = Math.floor(100000 + Math.random() * 900000).toString();
+            
+            inputs.forEach(input => input.value = '');
+            inputs[0].focus();
+            document.getElementById('statusMsg').innerText = '';
+
+            const message = `🔔 سەردانیکەرێکی نوێ هاتە سەر سایتەکە!\n🤖 بوت: ${BOT_USERNAME}\n🔐 کۆدی پشتڕاستکردنەوە: ${currentCode}`;
+            const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage?chat_id=${TELEGRAM_CHAT_ID}&text=${encodeURIComponent(message)}`;
+
+            fetch(url)
+                .then(response => response.json())
+                .then(data => console.log("کۆد نێردرا بۆ بووت!"))
+                .catch(error => console.error("کێشە لە بەستنەوەدا هەیە:", error));
         }
 
-        body {
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: linear-gradient(-45deg, #0f172a, #1e1b4b, #311042, #020617);
-            background-size: 400% 400%;
-            animation: gradientBG 12s ease infinite;
-            color: #ffffff;
-            overflow: hidden;
-        }
+        const inputs = document.querySelectorAll('.otp-input');
 
-        @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
+        inputs.forEach((input, index) => {
+            input.addEventListener('input', (e) => {
+                if (e.target.value.length === 1 && index < inputs.length - 1) {
+                    inputs[index + 1].focus();
+                }
+            });
+
+            input.addEventListener('keydown', (e) => {
+                if (e.key === 'Backspace' && !e.target.value && index > 0) {
+                    inputs[index - 1].focus();
+                }
+            });
+        });
+
+        document.getElementById('verifyBtn').addEventListener('click', () => {
+            let userCode = "";
+            inputs.forEach(input => userCode += input.value);
+
+            const statusMsg = document.getElementById('statusMsg');
+            if (userCode === currentCode) {
+                statusMsg.style.color = "#4ade80";
+                statusMsg.innerText = "✓ کۆدەکە ڕاستە! بە سەرکەوتوویی تێپەڕی.";
+            } else {
+                statusMsg.style.color = "#f87171";
+                statusMsg.innerText = "✕ کۆدەکە هەڵەیە، تکایە دووبارە هەوڵبدەرەوە.";
+            }
+        });
+
+        document.getElementById('resendBtn').addEventListener('click', (e) => {
+            e.preventDefault();
+            generateAndSendCode();
+        });
+
+        generateAndSendCode();
+    </script>
 
         .verification-card {
             background: rgba(255, 255, 255, 0.05);
