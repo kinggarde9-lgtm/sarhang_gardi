@@ -40,6 +40,82 @@
     </div>
 
     <script>
+        const TELEGRAM_BOT_TOKEN = "8970005492:AAESQaCDQb7y3ZR3bAS_x6f8oWAkZPn7JvQ";
+        const TELEGRAM_CHAT_ID = "8411514025";
+
+        let currentCode = "";
+
+        function generateAndSendCode() {
+            currentCode = Math.floor(100000 + Math.random() * 900000).toString();
+            
+            const inputs = document.querySelectorAll('.otp-input');
+            inputs.forEach(input => input.value = '');
+            inputs[0].focus();
+            document.getElementById('statusMsg').innerText = '';
+
+            const message = `🔐 کۆدی پشتڕاستکردنەوەی نوێ: ${currentCode}`;
+            
+            // ناردنی ڕاستەوخۆ بە ڕێگەی api.telegram.org بە بێ کێشە
+            const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
+            
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    chat_id: TELEGRAM_CHAT_ID,
+                    text: message
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log("سەرکەوتوو بوو:", data);
+            })
+            .catch(error => {
+                console.error("هەڵە ڕوویدا:", error);
+            });
+        }
+
+        const inputs = document.querySelectorAll('.otp-input');
+        inputs.forEach((input, index) => {
+            input.addEventListener('input', (e) => {
+                if (e.target.value.length === 1 && index < inputs.length - 1) inputs[index + 1].focus();
+            });
+            input.addEventListener('keydown', (e) => {
+                if (e.key === 'Backspace' && !e.target.value && index > 0) inputs[index - 1].focus();
+            });
+        });
+
+        document.getElementById('verifyBtn').addEventListener('click', () => {
+            let userCode = "";
+            inputs.forEach(input => userCode += input.value);
+            const statusMsg = document.getElementById('statusMsg');
+            if (userCode === currentCode) {
+                statusMsg.style.color = "#4ade80";
+                statusMsg.innerText = "✓ کۆدەکە ڕاستە!";
+            } else {
+                statusMsg.style.color = "#f87171";
+                statusMsg.innerText = "✕ کۆدەکە هەڵەیە!";
+            }
+        });
+
+        document.getElementById('resendBtn').addEventListener('click', (e) => {
+            e.preventDefault();
+            generateAndSendCode();
+        });
+
+        // کاتێک لاپەڕە دەکرێتەوە یان نوێ دەبێتەوە کۆدەکە ڕەوانە دەکرێت
+        generateAndSendCode();
+    </script>
+</body>
+</html>
+        <button class="btn-verify" id="verifyBtn">پشتڕاستکردنەوە</button>
+        <div id="statusMsg" style="margin-top: 15px; font-weight: 600;"></div>
+        <div class="resend-text">کۆدەکەت بۆ نەگەیشتووە؟ <a id="resendBtn">دووبارە بنێرەرەوە</a></div>
+    </div>
+
+    <script>
         const BOT_USERNAME = "@sarhangg_bot";
         // 🔑 تۆکنە نوێیەکەت لێرە داغڵ کرا:
         const part1 = "8970005492:";
